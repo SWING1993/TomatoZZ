@@ -20,14 +20,6 @@
 *.zip
 *.tar.gz
 *.rar
+target/
+.idea/
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-
-src/main/java/
-src/main/resources/sqlmap/
-src/main/webapp/WEB-INF/views/
-src/main/webapp/css/
-src/main/webapp/images/
-src/main/webapp/js/
-src/test/
