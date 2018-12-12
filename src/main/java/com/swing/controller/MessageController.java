@@ -17,6 +17,8 @@ public class MessageController {
         return "index";
     }
 
-
-
+    @RequestMapping("/hey")
+    public String hey() {
+        return "hey";
+    }
 }
