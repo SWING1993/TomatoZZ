@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
-    <display-name>helloworld</display-name>
+
+    <!--应用名-->
+    <display-name>Tomato</display-name>
+
     <!-- 配置编码方式-->
     <filter>
         <filter-name>encodingFilter</filter-name>
@@ -14,11 +17,11 @@
             <param-value>true</param-value>
         </init-param>
     </filter>
+
     <filter-mapping>
         <filter-name>encodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
 
     <!-- 配置springmvc的前端控制器 指向spring-mvc.xml 程序在启动的时候就加载springmvc 可以接受所有请求 load-on-startup：表示启动容器时初始化该Servlet； -->
     <servlet>
@@ -31,6 +34,7 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
+
     <!-- 将前端URL请求和后台处理方法controller建立对应关系-->
     <servlet-mapping>
         <servlet-name>springServlet</servlet-name>
@@ -43,6 +47,7 @@
             org.springframework.web.context.ContextLoaderListener
         </listener-class>
     </listener>
+
     <!-- 取消对某一类文件的拦截-->
     <servlet-mapping>
         <servlet-name>default</servlet-name>
@@ -53,17 +58,21 @@
         <param-name>contextConfigLocation</param-name>
         <param-value> classpath:spring/applicationContext.xml</param-value>
     </context-param>
+
     <!-- 欢迎页面-->
     <welcome-file-list>
         <welcome-file>/WEB-INF/index.jsp</welcome-file>
     </welcome-file-list>
+
     <!--404错误展示页面，可自行配置-->
-    <!--<error-page>-->
-    <!--<error-code>404</error-code>-->
-    <!--<location>/WEB-INF/views/404.jsp</location>-->
-    <!--</error-page>-->
+    <error-page>
+    <error-code>404</error-code>
+    <location>/WEB-INF/views/404.jsp</location>
+    </error-page>
+
     <!--设置session失效时间为30分钟 -->
     <session-config>
         <session-timeout>600</session-timeout>
     </session-config>
+
 </web-app>
