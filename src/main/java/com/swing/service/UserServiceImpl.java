@@ -16,4 +16,9 @@ public class UserServiceImpl implements UserService {
         return userDao.findUserById(id);
     }
 
+    public void register(User user) {
+        userDao.register(user);
+    };
+
+
 }

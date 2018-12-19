@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 
 @ResponseBody
@@ -17,8 +18,13 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(path = "/register",method = RequestMethod.POST)
-    public String register(@RequestParam(value = "email", required = false) String password, @RequestParam(value = "password", required = true) String email) {
-        return password + email;
+    public String register(@RequestParam(value = "email", required = false) String email, @RequestParam(value = "password", required = true) String password) {
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setCreated(new Date());
+        this.userService.register(user);
+        return email;
     }
 
     @RequestMapping(path = "/findUser", method = RequestMethod.GET)

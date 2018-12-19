@@ -4,9 +4,15 @@
 <!-- 设置为IUserDao接口方法提供sql语句配置 -->
 <mapper namespace="com.swing.dao.UserDao">
 
+    <insert id="register" parameterType = "map">
+        INSERT INTO user_tbl (email, password, created) VALUES (#{email}, #{password}, #{created})
+    </insert>
+
     <select id="findUserById" resultType="com.swing.entity.User" parameterType="int">
         SELECT * FROM user_tbl WHERE id = #{id}
     </select>
+
+
 
 </mapper>
 
