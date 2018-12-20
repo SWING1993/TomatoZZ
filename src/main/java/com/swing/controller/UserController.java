@@ -2,6 +2,8 @@ package com.swing.controller;
 
 import com.swing.entity.User;
 import com.swing.service.UserService;
+import com.swing.utils.RestResult;
+import com.swing.utils.RestResultGenerator;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,31 +20,31 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(path = "/register",method = RequestMethod.POST)
-    public String register(@RequestParam(value = "email", required = false) String email, @RequestParam(value = "password", required = true) String password) {
+    public RestResult<User> register(@RequestParam(value = "email", required = false) String email, @RequestParam(value = "password", required = true) String password) {
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
         user.setCreated(new Date());
         this.userService.register(user);
-        return email;
+        return RestResultGenerator.genSuccessResult();
     }
 
 
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public Object login(@RequestParam(value = "email", required = true) String email, @RequestParam(value = "password", required = true) String passwprd) {
+    public RestResult<User> login(@RequestParam(value = "email", required = true) String email, @RequestParam(value = "password", required = true) String passwprd) {
         User user = this.userService.findUserByEmail(email);
         if (user.getPassword().equals(passwprd)) {
-            return user;
+            return RestResultGenerator.genSuccessResult(user);
         } else {
-            return "密码错误！";
+            return RestResultGenerator.genErrorResult("密码错误");
         }
     }
 
     @RequestMapping(path = "/findUser", method = RequestMethod.GET)
-    public User findUser(@RequestParam(value = "id", required = true) int id) {
+    public RestResult<User> findUser(@RequestParam(value = "id", required = true) int id) {
         User user = this.userService.findUserById(id);
-        return user;
+        return RestResultGenerator.genSuccessResult(user);
     }
 
 }
