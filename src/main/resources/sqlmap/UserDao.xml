@@ -8,11 +8,14 @@
         INSERT INTO user_tbl (email, password, created) VALUES (#{email}, #{password}, #{created})
     </insert>
 
-    <select id="findUserById" resultType="com.swing.entity.User" parameterType="int">
+    <select id="findUserById" parameterType="int" resultType="com.swing.entity.User" >
         SELECT * FROM user_tbl WHERE id = #{id}
     </select>
 
 
+    <select id="findUserByEmail" parameterType="String" resultType="com.swing.entity.User">
+        SELECT * FROM user_tbl WHERE email = #{email}
+    </select>
 
 </mapper>
 

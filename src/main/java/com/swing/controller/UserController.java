@@ -27,6 +27,18 @@ public class UserController {
         return email;
     }
 
+
+
+    @RequestMapping(path = "/login", method = RequestMethod.POST)
+    public Object login(@RequestParam(value = "email", required = true) String email, @RequestParam(value = "password", required = true) String passwprd) {
+        User user = this.userService.findUserByEmail(email);
+        if (user.getPassword().equals(passwprd)) {
+            return user;
+        } else {
+            return "密码错误！";
+        }
+    }
+
     @RequestMapping(path = "/findUser", method = RequestMethod.GET)
     public User findUser(@RequestParam(value = "id", required = true) int id) {
         User user = this.userService.findUserById(id);

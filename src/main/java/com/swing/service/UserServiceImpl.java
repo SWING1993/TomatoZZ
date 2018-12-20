@@ -12,13 +12,17 @@ public class UserServiceImpl implements UserService {
     @Resource
     private UserDao userDao;
 
+
+    public void register(User user) {
+        userDao.register(user);
+    }
+
     public User findUserById(int id) {
         return userDao.findUserById(id);
     }
 
-    public void register(User user) {
-        userDao.register(user);
-    };
-
+    public User findUserByEmail(String email) {
+        return userDao.findUserByEmail(email);
+    }
 
 }

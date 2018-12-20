@@ -3,8 +3,10 @@ import com.swing.entity.User;
 
 public interface UserDao {
 
+    void register(User user);
+
     User findUserById(int id);
 
-    void register(User user);
+    User findUserByEmail(String email);
 
 }
