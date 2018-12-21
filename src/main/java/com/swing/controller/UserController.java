@@ -29,8 +29,6 @@ public class UserController {
         return RestResultGenerator.genSuccessResult();
     }
 
-
-
     @RequestMapping(path = "/login", method = RequestMethod.POST)
     public RestResult<User> login(@RequestParam(value = "email", required = true) String email, @RequestParam(value = "password", required = true) String passwprd) {
         User user = this.userService.findUserByEmail(email);
