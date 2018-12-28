@@ -3,8 +3,6 @@ package com.swing.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Date;
-
 public class RestResultGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RestResultGenerator.class);

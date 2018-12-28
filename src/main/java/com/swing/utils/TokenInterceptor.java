@@ -3,12 +3,12 @@ import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.swing.entity.User;
 import net.sf.json.JSONObject;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+// springmvc拦截器
 public class TokenInterceptor implements HandlerInterceptor {
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -39,7 +39,7 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     //请求不通过，返回错误信息给客户端
     private void responseMessage(HttpServletResponse response, PrintWriter out, int code, String error) {
-//        response.setContentType("application/json; charset=utf-8");
+        response.setContentType("application/json; charset=utf-8");
         RestResult result = RestResultGenerator.genErrorResult("403，认证不通过", code,error);
         out.print(JSONObject.fromObject(result));
         out.flush();
