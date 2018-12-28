@@ -12,20 +12,19 @@ import org.springframework.web.servlet.ModelAndView;
 public class TokenInterceptor implements HandlerInterceptor {
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println(request);
+        System.out.println(request.getRequestURI());
         response.setCharacterEncoding("utf-8");
         String token = request.getParameter("token");
-        System.out.println("token" + token);
         if (null != token) {
             User user = JWT.unsign(token, User.class);
             if (null != user) {
-                System.out.println("User存在" + user);
                 return true;
             }
             responseMessage(response, response.getWriter(),10002, "token已失效");
-            System.out.println("User不存在");
+            System.out.println("token无效");
             return false;
         }
+        System.out.println("token不存在");
         responseMessage(response, response.getWriter(),10002, "token不存在");
         return false;
     }
@@ -40,7 +39,7 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     //请求不通过，返回错误信息给客户端
     private void responseMessage(HttpServletResponse response, PrintWriter out, int code, String error) {
-        response.setContentType("application/json; charset=utf-8");
+//        response.setContentType("application/json; charset=utf-8");
         RestResult result = RestResultGenerator.genErrorResult("403，认证不通过", code,error);
         out.print(JSONObject.fromObject(result));
         out.flush();
