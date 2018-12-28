@@ -1,5 +1,6 @@
 package com.swing.utils;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class RestResult<T> {
@@ -7,7 +8,7 @@ public class RestResult<T> {
     private boolean success;
     private String message;
     private String error;
-    private Date time;
+    private String time;
     private T result;
     private int code;
 
@@ -55,11 +56,24 @@ public class RestResult<T> {
         this.error = error;
     }
 
-    public Date getTime() {
-        return time;
+    public String getTime() {
+        SimpleDateFormat sdf =   new SimpleDateFormat( " yyyy-MM-dd HH:mm:ss" );
+        return sdf.format(new Date());
     }
 
-    public void setTime(Date time) {
-        this.time = time;
+//    public void setTime(String time) {
+//        this.time = time;
+//    }
+
+    @Override
+    public String toString() {
+        return "RestResult{" +
+                "success=" + success +
+                ", message='" + message + '\'' +
+                ", error='" + error + '\'' +
+                ", time=" + time +
+                ", result=" + result +
+                ", code=" + code +
+                '}';
     }
 }

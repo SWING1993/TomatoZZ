@@ -24,7 +24,6 @@ public class RestResultGenerator {
         result.setResult(data);
         result.setCode(code);
         result.setMessage(message);
-        result.setTime(new Date());
         result.setError(error);
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("generate rest result:{}",result);
