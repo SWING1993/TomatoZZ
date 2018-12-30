@@ -37,7 +37,6 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     }
 
-    //请求不通过，返回错误信息给客户端
     private void responseMessage(HttpServletResponse response, PrintWriter out, int code, String error) {
         response.setContentType("application/json; charset=utf-8");
         RestResult result = RestResultGenerator.genErrorResult("403，认证不通过", code,error);
