@@ -5,25 +5,28 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.internal.com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.Map;
-
 public class JWT {
 
-    private static final String SECRET = "XX#>?N<:{LWPW";
+    private static final String SECRET = "xzc32hf";
 
     private static final String EXP = "exp";
 
     private static final String PAYLOAD = "payload";
 
-    // 加密，传入一个对象和有效期
-    public static <T> String sign (T obj, long maxAge) {
+    // 过期时间是120分钟即两个小时
+    private static final long EXPIRATION = 60L * 1000L * 120L;
+
+    // 加密，传入一个对象
+    public static <T> String sign (T obj) {
         try {
             final JWTSigner signer = new JWTSigner(SECRET);
             final Map<String, Object> claims = new HashMap<String, Object>();
             ObjectMapper mapper = new ObjectMapper();
             String jsonString = mapper.writeValueAsString(obj);
             claims.put(PAYLOAD, jsonString);
-            claims.put(EXP, System.currentTimeMillis() + maxAge);
-            return signer.sign(claims);
+            claims.put(EXP, System.currentTimeMillis() + EXPIRATION);
+            String token = signer.sign(claims);
+            return token;
         } catch (Exception e) {
             return null;
         }
@@ -47,12 +50,5 @@ public class JWT {
         } catch (Exception e) {
             return null;
         }
-
     }
-
-
-
-
-
-
 }

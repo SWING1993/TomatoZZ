@@ -7,6 +7,7 @@ import com.swing.entity.User;
 import net.sf.json.JSONObject;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import redis.clients.jedis.Jedis;
 
 // springmvc拦截器
 public class TokenInterceptor implements HandlerInterceptor {
@@ -14,19 +15,29 @@ public class TokenInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         System.out.println(request.getRequestURI());
         response.setCharacterEncoding("utf-8");
-        String token = request.getParameter("token");
-        if (null != token) {
-            User user = JWT.unsign(token, User.class);
-            if (null != user) {
-                return true;
+        String token = request.getHeader("token");
+        String uid = request.getHeader("uid");
+        try {
+            Jedis jedis = new Jedis("localhost");
+            String savedToken = jedis.get(uid);
+            if (jedis.get(uid).equals(token)) {
+                User user = JWT.unsign(token, User.class);
+                if (null != user) {
+                    return true;
+                }
+                System.out.println("token已失效");
+                responseMessage(response, response.getWriter(),10002, "token已失效");
+                return false;
             }
-            responseMessage(response, response.getWriter(),10002, "token已失效");
             System.out.println("token无效");
+            responseMessage(response, response.getWriter(),10002, "token无效");
+            return false;
+        } catch (Exception e) {
+            System.out.println("zzztoken无效");
+            responseMessage(response, response.getWriter(),10002, "zzztoken无效");
             return false;
         }
-        System.out.println("token不存在");
-        responseMessage(response, response.getWriter(),10002, "token不存在");
-        return false;
+
     }
 
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView model) throws Exception {

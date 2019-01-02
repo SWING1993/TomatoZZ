@@ -7,7 +7,6 @@ public class RestResultGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RestResultGenerator.class);
 
-
     /**
      * normal
      * @param success
@@ -29,7 +28,6 @@ public class RestResultGenerator {
         return result;
     }
 
-
     /**
      * success no message
      * @return
@@ -47,8 +45,6 @@ public class RestResultGenerator {
     public static <T> RestResult<T> genSuccessResult(T data) {
         return genResult(true,data,"处理成功", 10000, "");
     }
-
-
 
     /**
      * error message
