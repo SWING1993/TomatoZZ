@@ -10,9 +10,11 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import com.swing.utils.Md5;
 
 import com.swing.utils.JWT;
 import redis.clients.jedis.Jedis;
+
 
 @ResponseBody
 @Controller
@@ -27,20 +29,18 @@ public class UserController {
         System.out.println("用户注册");
         User user = new User();
         user.setEmail(email);
-        user.setPassword(password);
+        user.setPassword(Md5.getMd5(password));
         user.setCreated(new Date());
         this.userService.register(user);
         return RestResultGenerator.genSuccessResult();
     }
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public RestResult<Map<String, Object>> login(@RequestParam(value = "email", required = true) String email, @RequestParam(value = "password", required = true) String passwprd) {
+    public RestResult<Map<String, Object>> login(@RequestParam(value = "email", required = true) String email, @RequestParam(value = "password", required = true) String password) {
         System.out.println("用户登录");
         User user = this.userService.findUserByEmail(email);
-        if (user.getPassword().equals(passwprd)) {
-
+        if (user.getPassword().equals(Md5.getMd5(password))) {
             String token = JWT.sign(user);
-
             // 将token存入redis
             Jedis jedis = new Jedis("localhost");
             System.out.println("成功连接redis");
