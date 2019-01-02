@@ -27,46 +27,59 @@ public class UserController {
     @RequestMapping(path = "/register",method = RequestMethod.POST)
     public RestResult<User> register(@RequestParam(value = "email", required = false) String email, @RequestParam(value = "password", required = true) String password) {
         System.out.println("用户注册");
-        User user = new User();
-        user.setEmail(email);
-        user.setPassword(Md5.getMd5(password));
-        user.setCreated(new Date());
-        this.userService.register(user);
-        return RestResultGenerator.genSuccessResult();
+        try {
+            User user = new User();
+            user.setEmail(email);
+            user.setPassword(Md5.getMd5(password));
+            user.setCreated(new Date());
+            this.userService.register(user);
+            return RestResultGenerator.genSuccessResult();
+        } catch (Exception e) {
+            return RestResultGenerator.genErrorResult(e.getLocalizedMessage());
+        }
     }
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
     public RestResult<Map<String, Object>> login(@RequestParam(value = "email", required = true) String email, @RequestParam(value = "password", required = true) String password) {
         System.out.println("用户登录");
-        User user = this.userService.findUserByEmail(email);
-        if (user.getPassword().equals(Md5.getMd5(password))) {
-            String token = JWT.sign(user);
-            // 将token存入redis
-            Jedis jedis = new Jedis("localhost");
-            System.out.println("成功连接redis");
-            String idStr = String.valueOf(user.getId());
-            jedis.set(idStr, token);
-            System.out.println("redis 存储的字符串为: "+ jedis.get(String.valueOf(user.getId())));
+        try {
+            User user = this.userService.findUserByEmail(email);
+            if (user.getPassword().equals(Md5.getMd5(password))) {
+                String token = JWT.sign(user);
+                // 将token存入redis
+                Jedis jedis = new Jedis("localhost");
+                System.out.println("成功连接redis");
+                String idStr = String.valueOf(user.getId());
+                jedis.set(idStr, token);
+                System.out.println("redis 存储的字符串为: "+ jedis.get(idStr));
 
-            Map<String, Object> userMap = new HashMap<String ,Object>();
-            userMap.put("id" ,user.getId());
-            userMap.put("token", token);
-            userMap.put("created", user.getCreated());
-            userMap.put("email", user.getEmail());
-            return RestResultGenerator.genSuccessResult(userMap);
-        } else {
-            return RestResultGenerator.genErrorResult("密码错误");
+                Map<String, Object> userMap = new HashMap<String ,Object>();
+                userMap.put("id" ,user.getId());
+                userMap.put("token", token);
+                userMap.put("created", user.getCreated());
+                userMap.put("email", user.getEmail());
+                return RestResultGenerator.genSuccessResult(userMap);
+            } else {
+                return RestResultGenerator.genErrorResult("密码错误");
+            }
+        } catch (Exception e) {
+            return RestResultGenerator.genErrorResult(e.getLocalizedMessage());
         }
+
     }
 
     @RequestMapping(path = "/findUser", method = RequestMethod.POST)
     public RestResult<Map<String, Object>> findUser(@RequestParam(value = "id", required = true) int id) {
         System.out.println("查询用户");
-        User user = this.userService.findUserById(id);
-        Map<String, Object> userMap = new HashMap<String ,Object>();
-        userMap.put("id" ,user.getId());
-        userMap.put("created", user.getCreated());
-        userMap.put("email", user.getEmail());
-        return RestResultGenerator.genSuccessResult(userMap);
+        try {
+            User user = this.userService.findUserById(id);
+            Map<String, Object> userMap = new HashMap<String ,Object>();
+            userMap.put("id" ,user.getId());
+            userMap.put("created", user.getCreated());
+            userMap.put("email", user.getEmail());
+            return RestResultGenerator.genSuccessResult(userMap);
+        } catch (Exception e) {
+            return RestResultGenerator.genErrorResult(e.getLocalizedMessage());
+        }
     }
 }

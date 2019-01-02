@@ -8,7 +8,6 @@ public class User {
     private String email;
     private String password;
     private Date created;
-    private String token;
 
     public int getId() {
         return id;
@@ -40,14 +39,6 @@ public class User {
 
     public void setCreated(Date created) {
         this.created = created;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 
     @Override

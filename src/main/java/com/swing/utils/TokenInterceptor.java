@@ -33,8 +33,8 @@ public class TokenInterceptor implements HandlerInterceptor {
             responseMessage(response, response.getWriter(),10002, "token无效");
             return false;
         } catch (Exception e) {
-            System.out.println("zzztoken无效");
-            responseMessage(response, response.getWriter(),10002, "zzztoken无效");
+            System.out.println("token无效");
+            responseMessage(response, response.getWriter(),10002, "token无效");
             return false;
         }
 
