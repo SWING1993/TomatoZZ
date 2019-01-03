@@ -17,5 +17,16 @@
         SELECT * FROM user_tbl WHERE email = #{email}
     </select>
 
+    <update id="update" parameterType="map">
+        UPDATE user_tbl SET
+        username = #{username},
+        sex = #{sex},
+        nickname = #{nickname},
+        avatarUrl = #{avatarUrl},
+        userDesc = #{userDesc},
+        updated = #{updated}
+        WHERE id = #{id}
+    </update>
+
 </mapper>
 

@@ -7,6 +7,7 @@ import com.swing.utils.RestResultGenerator;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +41,8 @@ public class UserController {
     }
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public RestResult<Map<String, Object>> login(@RequestParam(value = "email", required = true) String email, @RequestParam(value = "password", required = true) String password) {
+    public RestResult<Map<String, Object>> login(@RequestParam(value = "email", required = true) String email,
+                                                 @RequestParam(value = "password", required = true) String password) {
         System.out.println("用户登录");
         try {
             User user = this.userService.findUserByEmail(email);
@@ -65,10 +67,9 @@ public class UserController {
         } catch (Exception e) {
             return RestResultGenerator.genErrorResult(e.getLocalizedMessage());
         }
-
     }
 
-    @RequestMapping(path = "/findUser", method = RequestMethod.POST)
+    @RequestMapping(path = "/findById", method = RequestMethod.GET)
     public RestResult<Map<String, Object>> findUser(@RequestParam(value = "id", required = true) int id) {
         System.out.println("查询用户");
         try {
@@ -82,4 +83,33 @@ public class UserController {
             return RestResultGenerator.genErrorResult(e.getLocalizedMessage());
         }
     }
+
+    @RequestMapping(path = "/update", method = RequestMethod.PUT)
+    public RestResult<User> update(HttpServletRequest request,
+                                   @RequestParam (value = "sex", required = false) Integer sex,
+                                   @RequestParam (value = "nickname", required = false) String nickname,
+                                   @RequestParam (value = "avatarUrl", required = false) String avatarUrl,
+                                   @RequestParam (value = "userDesc", required = false) String userDesc) {
+
+
+        int uid = Integer.valueOf(request.getHeader("uid"));
+        User user = this.userService.findUserById(uid);
+        int sexValue = 0;
+        if (sex != null && (sex == 0 ||sex == 1 ||sex == 2) ) {
+            sexValue = sex;
+        }
+        user.setSex(sexValue);
+        user.setNickname(nickname);
+        user.setAvatarUrl(avatarUrl);
+        user.setUserDesc(userDesc);
+        user.setUpdated(new Date());
+        System.out.println("更新用户资料" + user);
+        try {
+            this.userService.update(user);
+            return RestResultGenerator.genSuccessResult(user);
+        } catch (Exception e) {
+            return RestResultGenerator.genErrorResult(e.getLocalizedMessage());
+        }
+    }
+
 }

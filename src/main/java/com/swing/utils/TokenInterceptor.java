@@ -20,9 +20,9 @@ public class TokenInterceptor implements HandlerInterceptor {
         try {
             Jedis jedis = new Jedis("localhost");
             String savedToken = jedis.get(uid);
-            if (jedis.get(uid).equals(token)) {
+            if (savedToken.equals(token)) {
                 User user = JWT.unsign(token, User.class);
-                if (null != user) {
+                if (uid.equals(String.valueOf(user.getId()))) {
                     return true;
                 }
                 System.out.println("token已失效");

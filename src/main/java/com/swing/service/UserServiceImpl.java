@@ -12,7 +12,6 @@ public class UserServiceImpl implements UserService {
     @Resource
     private UserDao userDao;
 
-
     public void register(User user) {
         userDao.register(user);
     }
@@ -23,6 +22,11 @@ public class UserServiceImpl implements UserService {
 
     public User findUserByEmail(String email) {
         return userDao.findUserByEmail(email);
+    }
+
+    // 更新用户资料
+    public void update(User user) {
+        userDao.update(user);
     }
 
 }
