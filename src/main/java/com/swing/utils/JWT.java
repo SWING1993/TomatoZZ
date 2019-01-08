@@ -3,16 +3,15 @@ package com.swing.utils;
 import com.auth0.jwt.JWTSigner;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.internal.com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.HashMap;
-import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
+
 public class JWT {
 
     private static final String SECRET = "xzc32hf";
-
     private static final String EXP = "exp";
-
     private static final String PAYLOAD = "payload";
-
     // 过期时间是120分钟即两个小时
     private static final long EXPIRATION = 60L * 1000L * 120L;
 
@@ -51,4 +50,5 @@ public class JWT {
             return null;
         }
     }
+
 }

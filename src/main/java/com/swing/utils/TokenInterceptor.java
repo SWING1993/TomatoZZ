@@ -1,6 +1,7 @@
 package com.swing.utils;
-import java.io.PrintWriter;
 
+import java.io.PrintWriter;
+import com.swing.utils.Signature;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.swing.entity.User;
@@ -15,6 +16,15 @@ public class TokenInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         System.out.println(request.getRequestURI());
         response.setCharacterEncoding("utf-8");
+
+        // 验证签名
+        if (!Signature.verificationSign(request)) {
+            System.out.println("签名错误");
+            responseMessage(response, response.getWriter(),10002, "签名错误");
+            return false;
+        }
+
+        // 验证token
         String token = request.getHeader("token");
         String uid = request.getHeader("uid");
         try {
@@ -37,7 +47,6 @@ public class TokenInterceptor implements HandlerInterceptor {
             responseMessage(response, response.getWriter(),10002, "token无效");
             return false;
         }
-
     }
 
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView model) throws Exception {
@@ -55,4 +64,7 @@ public class TokenInterceptor implements HandlerInterceptor {
         out.flush();
         out.close();
     }
+
+
+
 }

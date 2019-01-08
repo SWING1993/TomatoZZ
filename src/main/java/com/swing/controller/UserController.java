@@ -19,6 +19,9 @@ import redis.clients.jedis.Jedis;
 @RequestMapping("/user")
 public class UserController {
 
+    // 盐值，用于混淆
+    private final static String passwordSalt = "tomato00zz321mmf";
+
     @Resource
     private UserService userService;
 
@@ -27,7 +30,7 @@ public class UserController {
         System.out.println("用户注册");
         User user = new User();
         user.setEmail(email);
-        user.setPassword(Md5.getMd5(password));
+        user.setPassword(Md5.getMd5(password, passwordSalt));
         user.setCreated(new Date());
         this.userService.register(user);
         return RestResultGenerator.genSuccessResult();
@@ -38,7 +41,7 @@ public class UserController {
                                                  @RequestParam(value = "password", required = true) String password) {
         System.out.println("用户登录");
         User user = this.userService.findUserByEmail(email);
-        if (user.getPassword().equals(Md5.getMd5(password))) {
+        if (user.getPassword().equals(Md5.getMd5(password, passwordSalt))) {
             String token = JWT.sign(user);
             // 将token存入redis
             Jedis jedis = new Jedis("localhost");
