@@ -107,6 +107,11 @@
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
 
+    <bean id="jedis" class="redis.clients.jedis.Jedis">
+        <constructor-arg name="host" value="localhost" />
+    </bean>
+
+
     <!-- 拦截器 -->
     <mvc:interceptors>
         <mvc:interceptor>

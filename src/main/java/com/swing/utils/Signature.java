@@ -5,7 +5,6 @@ import java.util.*;
 
 public class Signature {
 
-
     // 签名参数的key
     private static final String SIGN_KEY = "signature_secret";
     // ACCESS_KEY

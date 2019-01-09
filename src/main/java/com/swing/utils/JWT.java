@@ -50,5 +50,4 @@ public class JWT {
             return null;
         }
     }
-
 }

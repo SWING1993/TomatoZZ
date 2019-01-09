@@ -6,12 +6,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.swing.entity.User;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import redis.clients.jedis.Jedis;
 
 // springmvc拦截器
 public class TokenInterceptor implements HandlerInterceptor {
+
+    @Autowired
+    private Jedis jedis;
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         System.out.println(request.getRequestURI());
@@ -28,11 +32,10 @@ public class TokenInterceptor implements HandlerInterceptor {
         String token = request.getHeader("token");
         String uid = request.getHeader("uid");
         try {
-            Jedis jedis = new Jedis("localhost");
             String savedToken = jedis.get(uid);
             if (savedToken.equals(token)) {
-                User user = JWT.unsign(token, User.class);
-                if (uid.equals(String.valueOf(user.getId()))) {
+                String savedUid = JWT.unsign(token, String.class);
+                if (uid.equals(savedUid)) {
                     return true;
                 }
                 System.out.println("token已失效");

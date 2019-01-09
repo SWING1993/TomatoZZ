@@ -4,6 +4,7 @@ import com.swing.entity.User;
 import com.swing.service.UserService;
 import com.swing.utils.RestResult;
 import com.swing.utils.RestResultGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
@@ -22,14 +23,17 @@ public class UserController {
     // 盐值，用于混淆
     private final static String passwordSalt = "tomato00zz321mmf";
 
+    @Autowired
+    private Jedis jedis;
+
     @Resource
     private UserService userService;
 
     @RequestMapping(path = "/register",method = RequestMethod.POST)
-    public RestResult<User> register(@RequestParam(value = "email", required = false) String email, @RequestParam(value = "password", required = true) String password) {
+    public RestResult<User> register(@RequestParam(value = "phone", required = false) String phone, @RequestParam(value = "password", required = true) String password) {
         System.out.println("用户注册");
         User user = new User();
-        user.setEmail(email);
+        user.setPhone(phone);
         user.setPassword(Md5.getMd5(password, passwordSalt));
         user.setCreated(new Date());
         this.userService.register(user);
@@ -37,28 +41,49 @@ public class UserController {
     }
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public RestResult<Map<String, Object>> login(@RequestParam(value = "email", required = true) String email,
-                                                 @RequestParam(value = "password", required = true) String password) {
+    public RestResult<User> login(@RequestParam(value = "phone", required = true) String phone,
+                                  @RequestParam(value = "password", required = true) String password) {
         System.out.println("用户登录");
-        User user = this.userService.findUserByEmail(email);
-        if (user.getPassword().equals(Md5.getMd5(password, passwordSalt))) {
-            String token = JWT.sign(user);
-            // 将token存入redis
-            Jedis jedis = new Jedis("localhost");
-            System.out.println("成功连接redis");
-            String idStr = String.valueOf(user.getId());
-            jedis.set(idStr, token);
-            System.out.println("redis 存储的字符串为: "+ jedis.get(idStr));
-
-            Map<String, Object> userMap = new HashMap<String ,Object>();
-            userMap.put("id" ,user.getId());
-            userMap.put("token", token);
-            userMap.put("created", user.getCreated());
-            userMap.put("email", user.getEmail());
-            return RestResultGenerator.genSuccessResult(userMap);
-        } else {
-            return RestResultGenerator.genErrorResult("密码错误");
+        try {
+            User user = this.userService.findUserByPhone(phone);
+            password = Md5.getMd5(password, passwordSalt);
+            if (user.getPassword().equals(password)) {
+                String idStr = String.valueOf(user.getId());
+                String token = JWT.sign(idStr);
+                jedis.set(idStr, token);
+                System.out.println("redis 存储的字符串为: "+ jedis.get(idStr));
+                user.setToken(token);
+                return RestResultGenerator.genSuccessResult(user);
+            } else {
+                return RestResultGenerator.genErrorResult("密码错误");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getLocalizedMessage());
+            return RestResultGenerator.genErrorResult("用户名或密码错误");
         }
+    }
+
+    @RequestMapping(path = "/logout", method = RequestMethod.GET)
+    public RestResult<Long> logout(@RequestHeader("uid") int uid) {
+        System.out.println("用户退出登录");
+        // 将token存入redis
+        Long result = jedis.del(String.valueOf(uid));
+        return RestResultGenerator.genSuccessResult(result);
+    }
+
+    public RestResult<Map<String, Object>> refreshToekn(@RequestHeader("uid") int uid, @RequestHeader("token") String token) {
+        System.out.println("用户刷新token");
+        String idStr = String.valueOf(uid);
+        if (token.equals(jedis.get(idStr))) {
+            String newToken = JWT.sign(idStr);
+            jedis.set(idStr, newToken);
+            Map<String, Object> map = new HashMap<String , Object>();
+            map.put("token", newToken);
+            return RestResultGenerator.genSuccessResult(map);
+        } else {
+            return RestResultGenerator.genErrorResult("token无效");
+        }
+
     }
 
     @RequestMapping(path = "/findById", method = RequestMethod.GET)

@@ -7,7 +7,7 @@ public interface UserDao {
 
     User findUserById(int id);
 
-    User findUserByEmail(String email);
+    User findUserByPhone(String phone);
 
     void update(User user);
 

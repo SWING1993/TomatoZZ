@@ -20,8 +20,8 @@ public class UserServiceImpl implements UserService {
         return userDao.findUserById(id);
     }
 
-    public User findUserByEmail(String email) {
-        return userDao.findUserByEmail(email);
+    public User findUserByPhone(String phone) {
+        return userDao.findUserByPhone(phone);
     }
 
     // 更新用户资料

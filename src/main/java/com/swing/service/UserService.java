@@ -10,7 +10,7 @@ public interface UserService {
     public User findUserById(int id);
 
     // 根据 email 寻找对应的 User
-    public User findUserByEmail(String email);
+    public User findUserByPhone(String phone);
 
     // 更新用户资料
     public void update(User user);

@@ -13,7 +13,6 @@ public class User {
     private String password;
     private Date created;
     private Date updated;
-    private String username;
     private String nickname;
     private int sex;
     private String avatarUrl;
@@ -26,6 +25,7 @@ public class User {
     // 会员结束时间
     private Date vipEndDate;
 
+    private String token;
 
     public int getId() {
         return id;
@@ -73,14 +73,6 @@ public class User {
 
     public void setUpdated(Date updated) {
         this.updated = updated;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getNickname() {
@@ -139,19 +131,12 @@ public class User {
         this.vipEndDate = vipEndDate;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", created=" + created +
-                ", updated=" + updated +
-                ", username='" + username + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", sex=" + sex +
-                ", avatarUrl='" + avatarUrl + '\'' +
-                ", userDesc='" + userDesc + '\'' +
-                '}';
+    public String getToken() {
+        return token;
     }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
 }
