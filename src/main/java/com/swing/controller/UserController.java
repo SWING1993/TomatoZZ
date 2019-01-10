@@ -83,7 +83,6 @@ public class UserController {
         } else {
             return RestResultGenerator.genErrorResult("token无效");
         }
-
     }
 
     @RequestMapping(path = "/findById", method = RequestMethod.GET)
@@ -95,18 +94,18 @@ public class UserController {
 
     @RequestMapping(path = "/update", method = RequestMethod.PUT)
     public RestResult<User> update(@RequestHeader("uid") int uid,
+                                   @RequestParam (value = "email", required = false) String email,
                                    @RequestParam (value = "sex", required = false) Integer sex,
                                    @RequestParam (value = "nickname", required = false) String nickname,
                                    @RequestParam (value = "avatarUrl", required = false) String avatarUrl,
                                    @RequestParam (value = "userDesc", required = false) String userDesc) {
-
-
         User user = this.userService.findUserById(uid);
         int sexValue = 0;
         if (sex != null && (sex == 0 ||sex == 1 ||sex == 2) ) {
             sexValue = sex;
         }
         user.setSex(sexValue);
+        user.setEmail(email);
         user.setNickname(nickname);
         user.setAvatarUrl(avatarUrl);
         user.setUserDesc(userDesc);

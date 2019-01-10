@@ -21,14 +21,14 @@ public class TokenInterceptor implements HandlerInterceptor {
         System.out.println(request.getRequestURI());
         response.setCharacterEncoding("utf-8");
 
-        // 验证签名
+        // 先验证签名
         if (!Signature.verificationSign(request)) {
             System.out.println("签名错误");
             responseMessage(response, response.getWriter(),10002, "签名错误");
             return false;
         }
 
-        // 验证token
+        // 然后验证token
         String token = request.getHeader("token");
         String uid = request.getHeader("uid");
         try {
