@@ -50,3 +50,5 @@ public class MessageController {
         return RestResultGenerator.genSuccessResult(list);
     }
 }
+
+

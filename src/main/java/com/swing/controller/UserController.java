@@ -2,17 +2,16 @@ package com.swing.controller;
 
 import com.swing.entity.User;
 import com.swing.service.UserService;
-import com.swing.utils.RestResult;
-import com.swing.utils.RestResultGenerator;
+import com.swing.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import com.swing.utils.Md5;
-import com.swing.utils.JWT;
+
 import redis.clients.jedis.Jedis;
 
 @ResponseBody
@@ -29,6 +28,7 @@ public class UserController {
     @Resource
     private UserService userService;
 
+
     @RequestMapping(path = "/register",method = RequestMethod.POST)
     public RestResult<User> register(@RequestParam(value = "phone", required = false) String phone, @RequestParam(value = "password", required = true) String password) {
         System.out.println("用户注册");
@@ -42,7 +42,7 @@ public class UserController {
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
     public RestResult<User> login(@RequestParam(value = "phone", required = true) String phone,
-                                  @RequestParam(value = "password", required = true) String password) {
+                                  @RequestParam(value = "password", required = true) String password) throws IOException {
         System.out.println("用户登录");
         try {
             User user = this.userService.findUserByPhone(phone);
@@ -53,6 +53,8 @@ public class UserController {
                 jedis.set(idStr, token);
                 System.out.println("redis 存储的字符串为: "+ jedis.get(idStr));
                 user.setToken(token);
+                String botMsg = user.getPhone() + " 登录";
+                DingChatBot.sendMsg(botMsg);
                 return RestResultGenerator.genSuccessResult(user);
             } else {
                 return RestResultGenerator.genErrorResult("密码错误");
