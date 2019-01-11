@@ -111,7 +111,6 @@
         <constructor-arg name="host" value="localhost" />
     </bean>
 
-
     <!-- 拦截器 -->
     <mvc:interceptors>
         <mvc:interceptor>
@@ -120,6 +119,7 @@
             <!-- /register 和 /login 不需要拦截-->
             <mvc:exclude-mapping path="/user/register" />
             <mvc:exclude-mapping path="/user/login" />
+            <mvc:exclude-mapping path="/msg/*" />
             <bean class="com.swing.utils.TokenInterceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>

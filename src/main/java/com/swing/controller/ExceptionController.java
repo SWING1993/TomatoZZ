@@ -19,8 +19,8 @@ public class ExceptionController {
         Map map = new HashMap();
         map.put("Url",req.getRequestURL());
         map.put("Method",req.getMethod());
-        map.put("RemoteAddr",req.getRemoteAddr());
-        map.put("RemotePort",req.getRemotePort());
+//        map.put("RemoteAddr",req.getRemoteAddr());
+//        map.put("RemotePort",req.getRemotePort());
         map.put("Query",req.getQueryString());
         map.put("Info",ex.toString());
         return RestResultGenerator.genErrorResult("服务器异常，请稍后再试！", 10001, map.toString());

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 设置为IUserDao接口方法提供sql语句配置 -->
+<mapper namespace="com.swing.dao.MessageDao">
+
+
+    <insert id="addMsg" parameterType = "map">
+        INSERT INTO msg_tbl (uid, title, body, created) VALUES (#{uid}, #{title}, #{body}, #{created})
+    </insert>
+
+    <select id="findMsgByUid" parameterType="int" resultType="com.swing.entity.Message" >
+        SELECT * FROM msg_tbl WHERE uid = #{uid}
+    </select>
+
+</mapper>
+
+<!--
+           private int id;
+           private int uid;
+           private String title;
+           private String body;
+           private Date created;
+ -->
+
+<!--
+CREATE TABLE `msg_tbl` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(10) NOT NULL,
+  `created` date DEFAULT NULL,
+  `title` varchar(100) DEFAULT NULL,
+  `body` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uid` (`uid`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+-->
