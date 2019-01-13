@@ -23,7 +23,6 @@ public class ASFController {
     public RestResult<ArrayList<String>> findAll(@RequestParam(value = "pathname") String pathname) {
         System.out.println("asf findall");
         ArrayList<String> list = new ArrayList<>();
-//        String dirname = "/Users/songguohua/Desktop";
         File f1 = new File(pathname);
         if (f1.isDirectory()) {
             String sub[] = f1.list();
@@ -35,8 +34,10 @@ public class ASFController {
                         try {
                             String content = FileUtils.readFileToString(f);
                             JSONObject jsonObject= new JSONObject(content);
+                            jsonObject.put("filename", f.getName());
+                            jsonObject.put("filepath", f.getPath());
                             list.add(jsonObject.toString());
-                            System.out.println("jsonObject："+ jsonObject.toString());
+                            System.out.println("JSONObject："+ jsonObject.toString());
                         } catch (IOException e) {
                             System.out.println("JSONObjectError："+ e);
                         }
@@ -55,10 +56,10 @@ public class ASFController {
         try {
             // 输出新的json文件
             FileWriter fileWriter = new FileWriter(filename);
-            BufferedWriter bw = new BufferedWriter(fileWriter);
-            bw.write(content);
-            bw.flush();
-            bw.close();
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(content);
+            bufferedWriter.flush();
+            bufferedWriter.close();
         } catch (IOException e) {
             return RestResultGenerator.genErrorResult(e.getMessage());
         }

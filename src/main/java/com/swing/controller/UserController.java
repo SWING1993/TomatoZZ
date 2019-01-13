@@ -53,8 +53,8 @@ public class UserController {
                 jedis.set(idStr, token);
                 System.out.println("redis 存储的字符串为: "+ jedis.get(idStr));
                 user.setToken(token);
-                String botMsg = user.getPhone() + " 登录";
-                DingChatBot.sendMsg(botMsg);
+//                String botMsg = user.getPhone() + " 登录";
+//                DingChatBot.sendMsg(botMsg);
                 return RestResultGenerator.genSuccessResult(user);
             } else {
                 return RestResultGenerator.genErrorResult("密码错误");
