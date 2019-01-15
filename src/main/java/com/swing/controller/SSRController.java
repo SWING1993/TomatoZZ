@@ -32,6 +32,11 @@ public class SSRController {
 
     public SSRController() {
         System.out.println("SSRController");
+    }
+
+    private JSONArray ssrUsers;
+
+    private void loadSSRUserConfig(){
         File file = new File(SSRConfigFilePath);
         try {
             String usersJosnStr = FileUtils.readFileToString(file);
@@ -43,9 +48,8 @@ public class SSRController {
         }
     }
 
-    private JSONArray ssrUsers;
-
     private boolean deleteSSRUser(String username) {
+        this.loadSSRUserConfig();
         boolean isDelete = false;
         for (int i = 0; i < this.ssrUsers.length(); i ++) {
             JSONObject user = ssrUsers.getJSONObject(i);
@@ -75,49 +79,52 @@ public class SSRController {
     @RequestMapping(path = "/user",method = RequestMethod.GET)
     public RestResult<String> findBots() {
         System.out.println("asf/findBots");
+        this.loadSSRUserConfig();
         String result = this.ssrUsers.toString();
         return RestResultGenerator.genSuccessResult(result);
     }
 
-    // 添加用户配置 content 用户配置的jsonstring
-    @RequestMapping(path = "/user",method = RequestMethod.POST)
-    public RestResult<String> addUser(@RequestParam(value = "content") String content) {
-        System.out.println("asf/addUser");
-        if (JsonUtils.isJSONObjectValid(content)) {
-            JSONObject jsonObject = new JSONObject(content);
-            this.ssrUsers.put(jsonObject);
-            this.saveSSRUsers(ssrUsers);
-        } else {
-            return RestResultGenerator.genErrorResult("无效的Json");
-        }
-        return RestResultGenerator.genSuccessResult();
-    }
-
-    // 删除用户配置 userName 用户名
-    @RequestMapping(path = "/user", method = RequestMethod.DELETE)
-    public RestResult<String> deleteUser(@RequestParam(value = "username") String username) {
-        if (this.deleteSSRUser(username)) {
-            this.saveSSRUsers(this.ssrUsers);
-            return RestResultGenerator.genSuccessResult();
-        }
-        return RestResultGenerator.genErrorResult("没有用户为" + username + "的配置");
-    }
-
-    // 删除用户配置 content 用户配置的jsonstring
-    @RequestMapping(path = "/user", method = RequestMethod.PUT)
-    public RestResult<String> updateUser(@RequestParam(value = "content") String content) {
-        System.out.println("asf/updateUser");
-        if (JsonUtils.isJSONObjectValid(content)) {
-            JSONObject updateUser = new JSONObject(content);
-            String username = JsonUtils.getString(updateUser, "user");
-            if (this.deleteSSRUser(username)) {
-                this.ssrUsers.put(updateUser);
-                this.saveSSRUsers(this.ssrUsers);
-                return RestResultGenerator.genSuccessResult();
-            }
-            return RestResultGenerator.genErrorResult("没有用户为" + username + "的配置");
-        } else {
-            return RestResultGenerator.genErrorResult("无效的Json");
-        }
-    }
+//    // 添加用户配置 content 用户配置的jsonstring
+//    @RequestMapping(path = "/user",method = RequestMethod.POST)
+//    public RestResult<String> addUser(@RequestParam(value = "content") String content) {
+//        System.out.println("asf/addUser");
+//        if (JsonUtils.isJSONObjectValid(content)) {
+//            this.loadSSRUserConfig();
+//            JSONObject jsonObject = new JSONObject(content);
+//            this.ssrUsers.put(jsonObject);
+//            this.saveSSRUsers(ssrUsers);
+//        } else {
+//            return RestResultGenerator.genErrorResult("无效的Json");
+//        }
+//        return RestResultGenerator.genSuccessResult();
+//    }
+//
+//    // 删除用户配置 userName 用户名
+//    @RequestMapping(path = "/user", method = RequestMethod.DELETE)
+//    public RestResult<String> deleteUser(@RequestParam(value = "username") String username) {
+//        if (this.deleteSSRUser(username)) {
+//            this.saveSSRUsers(this.ssrUsers);
+//            return RestResultGenerator.genSuccessResult();
+//        }
+//        return RestResultGenerator.genErrorResult("没有用户为" + username + "的配置");
+//    }
+//
+//    // 删除用户配置 content 用户配置的jsonstring
+//    @RequestMapping(path = "/user", method = RequestMethod.PUT)
+//    public RestResult<String> updateUser(@RequestParam(value = "content") String content) {
+//        System.out.println("asf/updateUser");
+//        if (JsonUtils.isJSONObjectValid(content)) {
+//            this.loadSSRUserConfig();
+//            JSONObject updateUser = new JSONObject(content);
+//            String username = JsonUtils.getString(updateUser, "user");
+//            if (this.deleteSSRUser(username)) {
+//                this.ssrUsers.put(updateUser);
+//                this.saveSSRUsers(this.ssrUsers);
+//                return RestResultGenerator.genSuccessResult();
+//            }
+//            return RestResultGenerator.genErrorResult("没有用户为" + username + "的配置");
+//        } else {
+//            return RestResultGenerator.genErrorResult("无效的Json");
+//        }
+//    }
 }
