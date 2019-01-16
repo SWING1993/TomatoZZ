@@ -37,6 +37,12 @@ public class UserController {
         user.setPassword(Md5.getMd5(password, passwordSalt));
         user.setCreated(new Date());
         this.userService.register(user);
+        try {
+            String botMsg = user.getPhone() + " 注册成功";
+            DingChatBot.sendMsg(botMsg);
+        } catch (Exception e) {
+
+        }
         return RestResultGenerator.genSuccessResult();
     }
 

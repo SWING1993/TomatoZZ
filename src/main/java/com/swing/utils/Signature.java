@@ -11,7 +11,7 @@ public class Signature {
     // ACCESS_SECRET
     private static final String ACCESS_SECRET = "s7*&6f";
     // md5盐值，用于混淆
-    private final static String signSalt = "1s&^%gsa";
+    private final static String signSalt = "1s%gsa";
 
     // 验证签名
     public static boolean verificationSign(HttpServletRequest request) throws Exception {
@@ -34,22 +34,19 @@ public class Signature {
         Object[] keys = keysSet.toArray();
         Arrays.sort(keys);
         StringBuilder temp = new StringBuilder();
-        boolean first = true;
         for (Object key : keys) {
-            if (first) {
-                first = false;
-            } else {
-                temp.append("&");
-            }
-            temp.append(key).append("=");
-            Object value = params.get(key);
-            String valueString = "";
-            if (null != value) {
-                valueString = String.valueOf(value);
-            }
-            temp.append(valueString);
+            temp.append(key);
+            temp.append("&");
+//            值先不签名了，麻烦
+//            temp.append("=");
+//            Object value = params.get(key);
+//            String valueString = "";
+//            if (null != value) {
+//                valueString = String.valueOf(value);
+//            }
+//            temp.append(valueString);
         }
-        temp.append("&").append(ACCESS_KEY).append("=").append(ACCESS_SECRET);
+        temp.append(ACCESS_KEY).append("=").append(ACCESS_SECRET);
         System.out.println("temp：" + temp);
 
         String sign = Md5.getMd5(temp.toString(), signSalt);

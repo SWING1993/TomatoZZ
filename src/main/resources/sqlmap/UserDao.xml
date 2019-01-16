@@ -5,7 +5,7 @@
 <mapper namespace="com.swing.dao.UserDao">
 
     <insert id="register" parameterType = "map">
-        INSERT INTO user_tbl (phone, password, created) VALUES (#{phone}, #{password}, date)
+        INSERT INTO user_tbl (phone, password, created) VALUES (#{phone}, #{password}, #{created})
     </insert>
 
     <select id="findUserById" parameterType="int" resultType="com.swing.entity.User" >

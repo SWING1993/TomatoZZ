@@ -30,10 +30,6 @@ public class SSRController {
 //    private static final String SSRConfigFilePath = "/Users/songguohua/Desktop/ssruser.json";
     private static final String SSRConfigFilePath = "/usr/local/shadowsocksr/mudb.json";
 
-    public SSRController() {
-        System.out.println("SSRController");
-    }
-
     private JSONArray ssrUsers;
 
     private void loadSSRUserConfig(){
