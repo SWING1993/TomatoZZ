@@ -24,6 +24,7 @@ public class MessageController {
     @Resource
     private MessageService messageService;
 
+    // 发送消息
     @RequestMapping(path = "/send",method = RequestMethod.GET)
     public RestResult<String> send(@RequestParam(value = "token") String token,
                                    @RequestParam(value = "title", required = false) String title,
@@ -41,6 +42,7 @@ public class MessageController {
         return RestResultGenerator.genSuccessResult();
     }
 
+    // 查找消息
     @RequestMapping(path = "/find",method = RequestMethod.GET)
     public RestResult<List> findByUid(@RequestParam(value = "token") String token) {
         String uidString = JWT.unsign(token, String.class);

@@ -28,7 +28,7 @@ public class UserController {
     @Resource
     private UserService userService;
 
-
+    // 用户注册
     @RequestMapping(path = "/register",method = RequestMethod.POST)
     public RestResult<User> register(@RequestParam(value = "phone", required = false) String phone, @RequestParam(value = "password", required = true) String password) {
         System.out.println("用户注册");
@@ -46,6 +46,7 @@ public class UserController {
         return RestResultGenerator.genSuccessResult();
     }
 
+    // 用户登录
     @RequestMapping(path = "/login", method = RequestMethod.POST)
     public RestResult<User> login(@RequestParam(value = "phone", required = true) String phone,
                                   @RequestParam(value = "password", required = true) String password) throws IOException {
@@ -71,6 +72,8 @@ public class UserController {
         }
     }
 
+
+    // 用户退出登录
     @RequestMapping(path = "/logout", method = RequestMethod.GET)
     public RestResult<Long> logout(@RequestHeader("uid") int uid) {
         System.out.println("用户退出登录");
@@ -79,6 +82,8 @@ public class UserController {
         return RestResultGenerator.genSuccessResult(result);
     }
 
+    // 刷新token
+    @RequestMapping(path = "/refreshToekn", method = RequestMethod.PUT)
     public RestResult<Map<String, Object>> refreshToekn(@RequestHeader("uid") int uid, @RequestHeader("token") String token) {
         System.out.println("用户刷新token");
         String idStr = String.valueOf(uid);
@@ -93,6 +98,7 @@ public class UserController {
         }
     }
 
+    // 根据id查询用户资料
     @RequestMapping(path = "/findById", method = RequestMethod.GET)
     public RestResult<User> findUser(@RequestParam(value = "id", required = true) int id) {
         System.out.println("查询用户");
@@ -100,6 +106,7 @@ public class UserController {
         return RestResultGenerator.genSuccessResult(user);
     }
 
+    // 修改个人资料
     @RequestMapping(path = "/update", method = RequestMethod.PUT)
     public RestResult<User> update(@RequestHeader("uid") int uid,
                                    @RequestParam (value = "email", required = false) String email,
@@ -123,6 +130,7 @@ public class UserController {
         return RestResultGenerator.genSuccessResult(user);
     }
 
+    // 查询个人资料
     @RequestMapping(path = "/info", method = RequestMethod.GET)
     public RestResult<User> info(@RequestHeader("uid") int uid) {
         User user = this.userService.findUserById(uid);

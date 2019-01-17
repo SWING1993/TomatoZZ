@@ -44,6 +44,7 @@ public class SSRController {
         }
     }
 
+    /*
     private boolean deleteSSRUser(String username) {
         this.loadSSRUserConfig();
         boolean isDelete = false;
@@ -70,6 +71,7 @@ public class SSRController {
             System.out.println("IOException："+ e);
         }
     }
+    */
 
     // 查找所有用户的配置
     @RequestMapping(path = "/user",method = RequestMethod.GET)
