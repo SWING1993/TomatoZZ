@@ -308,8 +308,12 @@
                 <plugin>
                     <artifactId>maven-war-plugin</artifactId>
                     <version>3.2.0</version>
+                    <configuration>
+                        <failOnMissingWebXml>false</failOnMissingWebXml>
+                    </configuration>
                 </plugin>
                 <plugin>
+
                     <artifactId>maven-install-plugin</artifactId>
                     <version>2.5.2</version>
                 </plugin>
@@ -328,6 +332,8 @@
                         <overwrite>true</overwrite>
                     </configuration>
                 </plugin>
+
+
             </plugins>
         </pluginManagement>
     </build>
