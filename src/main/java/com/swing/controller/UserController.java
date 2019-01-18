@@ -83,7 +83,7 @@ public class UserController {
     }
 
     // 刷新token
-    @RequestMapping(path = "/refreshToekn", method = RequestMethod.PUT)
+    @RequestMapping(path = "/refreshToekn", method = RequestMethod.GET)
     public RestResult<Map<String, Object>> refreshToekn(@RequestHeader("uid") int uid, @RequestHeader("token") String token) {
         System.out.println("用户刷新token");
         String idStr = String.valueOf(uid);

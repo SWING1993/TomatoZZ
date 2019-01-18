@@ -19,9 +19,6 @@ public class ExceptionController {
     public RestResult<String > handleError(HttpServletRequest req, Exception ex) throws Exception {
         Map map = new HashMap();
         map.put("Url",req.getRequestURI());
-//        map.put("Method",req.getMethod());
-//        map.put("RemoteAddr",req.getRemoteAddr());
-//        map.put("RemotePort",req.getRemotePort());
         map.put("Query",req.getQueryString());
         map.put("Info",ex.toString());
         String errorMsg = "服务异常\n" + map.toString();

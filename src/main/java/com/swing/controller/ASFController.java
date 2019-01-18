@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
+import java.util.*;
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
 
 @ResponseBody
 @Controller
@@ -23,7 +21,10 @@ public class ASFController {
 
     private static final String filename = "FileName";
     private static final String ASFConfigFilePath = "/root/ArchiSteamFarm/asf_linux/config";
-//    private static final String ConfigFilePath = "/Users/songguohua/Desktop";
+    private static final String ASFLogFilePath = "/root/ArchiSteamFarm/asf_linux/log.txt";
+
+//    private static final String ASFLogFilePath = "/Users/songguohua/Desktop/log.txt";
+//    private static final String ASFConfigFilePath = "/Users/songguohua/Desktop";
 
     @RequestMapping(path = "/findBots",method = RequestMethod.GET)
     public RestResult<Map<String, Object>> findBots() {
@@ -83,5 +84,29 @@ public class ASFController {
         return RestResultGenerator.genSuccessResult();
     }
 
+    @RequestMapping(path = "/logs",method = RequestMethod.GET)
+    public RestResult<List<String>> getlogs() throws IOException {
+        FileInputStream fin = new FileInputStream(ASFLogFilePath);
+        InputStreamReader reader = new InputStreamReader(fin);
+        BufferedReader buffReader = new BufferedReader(reader);
+        String strTmp = "";
+        List<String> list = new ArrayList<>();
+        while((strTmp = buffReader.readLine())!=null){
+            list.add(strTmp);
+        }
+        buffReader.close();
+        Collections.reverse(list);
+        System.out.println(list);
+        return RestResultGenerator.genSuccessResult(list);
+    }
 
+    @RequestMapping(path = "/logs",method = RequestMethod.DELETE)
+    public RestResult removelogs() throws IOException {
+        FileWriter fileWriter = new FileWriter(ASFLogFilePath);
+        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+        bufferedWriter.write("");
+        bufferedWriter.flush();
+        bufferedWriter.close();
+        return RestResultGenerator.genSuccessResult();
+    }
 }
