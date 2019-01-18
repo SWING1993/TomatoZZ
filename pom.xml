@@ -310,6 +310,15 @@
                     <version>3.2.0</version>
                     <configuration>
                         <failOnMissingWebXml>false</failOnMissingWebXml>
+                        <webResources>
+                            <resource>            
+                                <directory>Tomato\WEB-INF\</directory>
+                                <targetPath>WEB-INF</targetPath>
+                                <includes>
+                                    <include>**/*.xml</include>
+                                </includes>
+                            </resource>
+                        </webResources>
                     </configuration>
                 </plugin>
                 <plugin>
