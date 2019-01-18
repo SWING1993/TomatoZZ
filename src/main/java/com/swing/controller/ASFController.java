@@ -26,7 +26,7 @@ public class ASFController {
 //    private static final String ASFLogFilePath = "/Users/songguohua/Desktop/log.txt";
 //    private static final String ASFConfigFilePath = "/Users/songguohua/Desktop";
 
-    @RequestMapping(path = "/findBots",method = RequestMethod.GET)
+    @RequestMapping(path = "/findBots", method = RequestMethod.GET)
     public RestResult<Map<String, Object>> findBots() {
         System.out.println("asf/findBots");
         String asf = new String();
@@ -64,7 +64,7 @@ public class ASFController {
         return RestResultGenerator.genSuccessResult(map);
     }
 
-    @RequestMapping(path = "/save",method = RequestMethod.POST)
+    @RequestMapping(path = "/save", method = RequestMethod.POST)
     public RestResult save(@RequestParam(value = "filename") String filename, @RequestParam(value = "content") String content) {
         if (JsonUtils.isJSONObjectValid(content)) {
             try {
@@ -84,7 +84,7 @@ public class ASFController {
         return RestResultGenerator.genSuccessResult();
     }
 
-    @RequestMapping(path = "/logs",method = RequestMethod.GET)
+    @RequestMapping(path = "/logs", method = RequestMethod.GET)
     public RestResult<List<String>> getlogs() throws IOException {
         FileInputStream fin = new FileInputStream(ASFLogFilePath);
         InputStreamReader reader = new InputStreamReader(fin);
@@ -100,7 +100,7 @@ public class ASFController {
         return RestResultGenerator.genSuccessResult(list);
     }
 
-    @RequestMapping(path = "/logs",method = RequestMethod.DELETE)
+    @RequestMapping(path = "/logs", method = RequestMethod.DELETE)
     public RestResult removelogs() throws IOException {
         FileWriter fileWriter = new FileWriter(ASFLogFilePath);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);

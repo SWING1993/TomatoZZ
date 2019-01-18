@@ -18,9 +18,9 @@ public class ExceptionController {
     @ExceptionHandler(Exception.class)
     public RestResult<String > handleError(HttpServletRequest req, Exception ex) throws Exception {
         Map map = new HashMap();
-        map.put("Url",req.getRequestURI());
-        map.put("Query",req.getQueryString());
-        map.put("Info",ex.toString());
+        map.put("url",req.getRequestURI());
+        map.put("query",req.getQueryString());
+        map.put("info",ex.toString());
         String errorMsg = "服务异常\n" + map.toString();
         DingChatBot.sendMsg(errorMsg);
         return RestResultGenerator.genErrorResult("服务器异常，请稍后再试！", 10001, map.toString());

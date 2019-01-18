@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
 import redis.clients.jedis.Jedis;
 
 @ResponseBody
@@ -71,7 +70,6 @@ public class UserController {
             return RestResultGenerator.genErrorResult("用户名或密码错误");
         }
     }
-
 
     // 用户退出登录
     @RequestMapping(path = "/logout", method = RequestMethod.GET)

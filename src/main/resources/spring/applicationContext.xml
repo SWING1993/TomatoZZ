@@ -62,8 +62,6 @@
         <!--<property name="suffix" value=".jsp" />-->
     <!--</bean>-->
 
-    <!-- 配置dbcp数据库连接池 -->
-    <!-- <context:property-placeholder location="classpath:db.properties"/> -->
     <!--数据库配置 -->
     <bean id = "propertyConfigurer" class = "org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
@@ -119,9 +117,6 @@
             <!-- /register 和 /login 不需要拦截-->
             <mvc:exclude-mapping path="/user/register" />
             <mvc:exclude-mapping path="/user/login" />
-            <!--<mvc:exclude-mapping path="/msg/*" />-->
-            <!--<mvc:exclude-mapping path="/asf/*" />-->
-            <!--<mvc:exclude-mapping path="/ssr/*" />-->
             <bean class="com.swing.utils.TokenInterceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>
