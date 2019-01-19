@@ -117,6 +117,8 @@
             <!-- /register 和 /login 不需要拦截-->
             <mvc:exclude-mapping path="/user/register" />
             <mvc:exclude-mapping path="/user/login" />
+            <mvc:exclude-mapping path="/asf/*" />
+            <mvc:exclude-mapping path="/ssr/*" />
             <bean class="com.swing.utils.TokenInterceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>
