@@ -107,10 +107,10 @@
             <!-- 匹配的是url路径， 如果不配置或/**,将拦截所有的Controller -->
             <mvc:mapping path="/**" />
             <!-- /register 和 /login 不需要拦截-->
-            <mvc:exclude-mapping path="/user/register" />
-            <mvc:exclude-mapping path="/user/login" />
-            <!--<mvc:exclude-mapping path="/asf/*" />-->
-            <!--<mvc:exclude-mapping path="/ssr/*" />-->
+            <!--<mvc:exclude-mapping path="/user/register" />-->
+            <!--<mvc:exclude-mapping path="/user/login" />-->
+            <mvc:exclude-mapping path="/asf/*" />
+            <mvc:exclude-mapping path="/ssr/*" />
             <bean class="com.swing.utils.TokenInterceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>
