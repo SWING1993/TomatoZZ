@@ -3,7 +3,6 @@ package com.swing.service;
 import com.swing.entity.User;
 import com.swing.dao.UserDao;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 
 @Service("userService")
@@ -24,7 +23,6 @@ public class UserServiceImpl implements UserService {
         return userDao.findUserByPhone(phone);
     }
 
-    // 更新用户资料
     public void update(User user) {
         userDao.update(user);
     }

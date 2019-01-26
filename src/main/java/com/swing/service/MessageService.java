@@ -1,7 +1,6 @@
 package com.swing.service;
 
 import com.swing.entity.Message;
-
 import java.util.List;
 
 public interface MessageService {

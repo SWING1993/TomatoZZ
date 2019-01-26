@@ -1,4 +1,5 @@
 package com.swing.service;
+
 import com.swing.entity.User;
 
 public interface UserService {

@@ -3,7 +3,6 @@ package com.swing.service;
 import com.swing.dao.MessageDao;
 import com.swing.entity.Message;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.util.List;
 

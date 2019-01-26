@@ -8,7 +8,7 @@ public class RestResult<T> {
     private boolean success;
     private String message;
     private String error;
-    private String time;
+    private String timestamp;
     private T result;
     private int code;
 
@@ -30,6 +30,14 @@ public class RestResult<T> {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 
     public T getResult() {
@@ -56,14 +64,7 @@ public class RestResult<T> {
         this.error = error;
     }
 
-    public String getTime() {
-        SimpleDateFormat sdf =   new SimpleDateFormat( " yyyy-MM-dd HH:mm:ss" );
-        return sdf.format(new Date());
-    }
 
-//    public void setTime(String time) {
-//        this.time = time;
-//    }
 
     @Override
     public String toString() {
@@ -71,7 +72,7 @@ public class RestResult<T> {
                 "success=" + success +
                 ", message='" + message + '\'' +
                 ", error='" + error + '\'' +
-                ", time=" + time +
+                ", timestamp=" + timestamp +
                 ", result=" + result +
                 ", code=" + code +
                 '}';

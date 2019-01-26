@@ -15,12 +15,14 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
-
+/*
 @ResponseBody
 @Controller
 @RequestMapping("/msg")
+*/
 public class MessageController {
 
+    /*
     @Resource
     private MessageService messageService;
 
@@ -51,6 +53,7 @@ public class MessageController {
         List list = messageService.findMsgByUid(uid);
         return RestResultGenerator.genSuccessResult(list);
     }
+    */
 }
 
 

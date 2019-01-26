@@ -13,11 +13,14 @@ import java.util.HashMap;
 import java.util.Map;
 import redis.clients.jedis.Jedis;
 
+/*
 @ResponseBody
 @Controller
 @RequestMapping("/user")
+*/
 public class UserController {
 
+    /*
     // 盐值，用于混淆
     private final static String passwordSalt = "tomato00zz321mmf";
 
@@ -134,4 +137,5 @@ public class UserController {
         User user = this.userService.findUserById(uid);
         return RestResultGenerator.genSuccessResult(user);
     }
+    */
 }

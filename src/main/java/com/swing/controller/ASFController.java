@@ -1,5 +1,6 @@
 package com.swing.controller;
 
+import com.swing.utils.DingChatBot;
 import com.swing.utils.JsonUtils;
 import com.swing.utils.RestResult;
 import com.swing.utils.RestResultGenerator;
@@ -22,9 +23,6 @@ public class ASFController {
     private static final String filename = "FileName";
     private static final String ASFConfigFilePath = "/root/ArchiSteamFarm/asf_linux/config";
     private static final String ASFLogFilePath = "/root/ArchiSteamFarm/asf_linux/log.txt";
-
-//    private static final String ASFLogFilePath = "/Users/songguohua/Desktop/log.txt";
-//    private static final String ASFConfigFilePath = "/Users/songguohua/Desktop";
 
     @RequestMapping(path = "/findBots", method = RequestMethod.GET)
     public RestResult<Map<String, Object>> findBots() {
@@ -65,7 +63,7 @@ public class ASFController {
     }
 
     @RequestMapping(path = "/save", method = RequestMethod.POST)
-    public RestResult save(@RequestParam(value = "filename") String filename, @RequestParam(value = "content") String content) {
+    public RestResult save(@RequestParam(value = "filename") String filename, @RequestParam(value = "content") String content) throws Exception {
         if (JsonUtils.isJSONObjectValid(content)) {
             try {
                 JSONObject jsonObject = new JSONObject(content);
@@ -81,6 +79,7 @@ public class ASFController {
         } else {
             return RestResultGenerator.genErrorResult("无效的Json");
         }
+        DingChatBot.sendMsg(filename + "成功保存！");
         return RestResultGenerator.genSuccessResult();
     }
 

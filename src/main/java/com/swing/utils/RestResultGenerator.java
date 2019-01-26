@@ -3,9 +3,14 @@ package com.swing.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class RestResultGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RestResultGenerator.class);
+
+    private static final SimpleDateFormat simpleDateFormat =  new SimpleDateFormat( " yyyy-MM-dd HH:mm:ss" );
 
     /**
      * normal
@@ -22,6 +27,7 @@ public class RestResultGenerator {
         result.setCode(code);
         result.setMessage(message);
         result.setError(error);
+        result.setTimestamp(RestResultGenerator.simpleDateFormat.format(new Date()));
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("generate rest result:{}",result);
         }

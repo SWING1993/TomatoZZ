@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class IndexController {
 
     @RequestMapping("/")
-    public RestResult<String> index() {
-        return RestResultGenerator.genSuccessResult("hello world");
-
+    public String index() {
+        return "hello world";
     }
 
 }
