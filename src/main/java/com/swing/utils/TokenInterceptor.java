@@ -18,14 +18,6 @@ public class TokenInterceptor implements HandlerInterceptor {
     private Jedis jedis;
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println(request.getRequestURI());
-        response.setCharacterEncoding("utf-8");
-
-        if (!Signature.verificationSign(request)) {
-            System.out.println("签名错误");
-            responseMessage(response, response.getWriter(),10002, "签名错误");
-            return false;
-        }
         return true;
 
         /*
@@ -70,13 +62,12 @@ public class TokenInterceptor implements HandlerInterceptor {
     }
 
     private void responseMessage(HttpServletResponse response, PrintWriter out, int code, String error) {
+        response.setCharacterEncoding("utf-8");
         response.setContentType("application/json; charset=utf-8");
         RestResult result = RestResultGenerator.genErrorResult("403，认证不通过", code,error);
         out.print(JSONObject.fromObject(result));
         out.flush();
         out.close();
     }
-
-
 
 }

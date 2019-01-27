@@ -25,6 +25,9 @@ public class ExceptionController {
         map.put("url",req.getRequestURI());
         map.put("query",req.getQueryString());
         map.put("info",ex.toString());
+//        while (req.getHeaderNames().hasMoreElements()) {
+//            map.put("header "+ req.getHeaderNames().nextElement(), req.getHeader(String.valueOf(req.getHeaderNames().nextElement())));
+//        }
         String errorMsg = "服务异常\n" + map.toString();
         DingChatBot.sendMsg(errorMsg);
         logger.info(errorMsg);
