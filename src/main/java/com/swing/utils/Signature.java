@@ -9,9 +9,9 @@ public class Signature {
     // ACCESS_KEY
     private static final String ACCESS_KEY = "accessKey";
     // ACCESS_SECRET
-    private static final String ACCESS_SECRET = "s7*&6f";
+    private static final String ACCESS_SECRET = "!@#orange";
     // md5盐值，用于混淆
-    private final static String signSalt = "1s%gsa";
+    private final static String signSalt = "orange!@#";
 
     // 验证签名
     public static boolean verificationSign(HttpServletRequest request) throws Exception {
