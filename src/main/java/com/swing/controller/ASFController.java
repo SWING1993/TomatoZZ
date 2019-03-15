@@ -23,9 +23,6 @@ public class ASFController {
     private static final String ASFConfigFilePath = "/root/ArchiSteamFarm/asf_linux/config";
     private static final String ASFLogFilePath = "/root/ArchiSteamFarm/asf_linux/log.txt";
 
-//    private static final String ASFLogFilePath = "/Users/songguohua/Desktop/log.txt";
-//    private static final String ASFConfigFilePath = "/Users/songguohua/Desktop";
-
     @RequestMapping(path = "/findBots", method = RequestMethod.GET)
     public RestResult<Map<String, Object>> findBots() {
         System.out.println("asf/findBots");

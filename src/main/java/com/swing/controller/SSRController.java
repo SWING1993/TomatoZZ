@@ -3,24 +3,15 @@ package com.swing.controller;
 import com.swing.utils.JsonUtils;
 import com.swing.utils.RestResult;
 import com.swing.utils.RestResultGenerator;
-import net.sf.json.util.JSONUtils;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.springframework.web.bind.annotation.*;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 @ResponseBody
 @Controller
@@ -44,7 +35,6 @@ public class SSRController {
         }
     }
 
-    /*
     private boolean deleteSSRUser(String username) {
         this.loadSSRUserConfig();
         boolean isDelete = false;
@@ -71,58 +61,54 @@ public class SSRController {
             System.out.println("IOException："+ e);
         }
     }
-    */
 
     // 查找所有用户的配置
     @RequestMapping(path = "/user",method = RequestMethod.GET)
     public RestResult<String> findBots() {
-        System.out.println("asf/findBots");
         this.loadSSRUserConfig();
         String result = this.ssrUsers.toString();
         return RestResultGenerator.genSuccessResult(result);
     }
 
-//    // 添加用户配置 content 用户配置的jsonstring
-//    @RequestMapping(path = "/user",method = RequestMethod.POST)
-//    public RestResult<String> addUser(@RequestParam(value = "content") String content) {
-//        System.out.println("asf/addUser");
-//        if (JsonUtils.isJSONObjectValid(content)) {
-//            this.loadSSRUserConfig();
-//            JSONObject jsonObject = new JSONObject(content);
-//            this.ssrUsers.put(jsonObject);
-//            this.saveSSRUsers(ssrUsers);
-//        } else {
-//            return RestResultGenerator.genErrorResult("无效的Json");
-//        }
-//        return RestResultGenerator.genSuccessResult();
-//    }
-//
-//    // 删除用户配置 userName 用户名
-//    @RequestMapping(path = "/user", method = RequestMethod.DELETE)
-//    public RestResult<String> deleteUser(@RequestParam(value = "username") String username) {
-//        if (this.deleteSSRUser(username)) {
-//            this.saveSSRUsers(this.ssrUsers);
-//            return RestResultGenerator.genSuccessResult();
-//        }
-//        return RestResultGenerator.genErrorResult("没有用户为" + username + "的配置");
-//    }
-//
-//    // 删除用户配置 content 用户配置的jsonstring
-//    @RequestMapping(path = "/user", method = RequestMethod.PUT)
-//    public RestResult<String> updateUser(@RequestParam(value = "content") String content) {
-//        System.out.println("asf/updateUser");
-//        if (JsonUtils.isJSONObjectValid(content)) {
-//            this.loadSSRUserConfig();
-//            JSONObject updateUser = new JSONObject(content);
-//            String username = JsonUtils.getString(updateUser, "user");
-//            if (this.deleteSSRUser(username)) {
-//                this.ssrUsers.put(updateUser);
-//                this.saveSSRUsers(this.ssrUsers);
-//                return RestResultGenerator.genSuccessResult();
-//            }
-//            return RestResultGenerator.genErrorResult("没有用户为" + username + "的配置");
-//        } else {
-//            return RestResultGenerator.genErrorResult("无效的Json");
-//        }
-//    }
+    // 新增用户配置
+    @RequestMapping(path = "/user",method = RequestMethod.POST)
+    public RestResult<String> addUser(@RequestBody String config) {
+        if (JsonUtils.isJSONObjectValid(config)) {
+            this.loadSSRUserConfig();
+            JSONObject jsonObject = new JSONObject(config);
+            this.ssrUsers.put(jsonObject);
+            this.saveSSRUsers(ssrUsers);
+        } else {
+            return RestResultGenerator.genErrorResult("无效的Json");
+        }
+        return RestResultGenerator.genSuccessResult();
+    }
+
+    // 根据userName（用户名）删除用户配置
+    @RequestMapping(path = "/user", method = RequestMethod.DELETE)
+    public RestResult<String> deleteUser(@RequestParam(value = "username") String username) {
+        if (this.deleteSSRUser(username)) {
+            this.saveSSRUsers(this.ssrUsers);
+            return RestResultGenerator.genSuccessResult();
+        }
+        return RestResultGenerator.genErrorResult("没有用户为" + username + "的配置");
+    }
+
+    // 修改用户配置
+    @RequestMapping(path = "/user", method = RequestMethod.PUT)
+    public RestResult<String> updateUser(@RequestBody String config) {
+        if (JsonUtils.isJSONObjectValid(config)) {
+            this.loadSSRUserConfig();
+            JSONObject updateUser = new JSONObject(config);
+            String username = JsonUtils.getString(updateUser, "user");
+            if (this.deleteSSRUser(username)) {
+                this.ssrUsers.put(updateUser);
+                this.saveSSRUsers(this.ssrUsers);
+                return RestResultGenerator.genSuccessResult();
+            }
+            return RestResultGenerator.genErrorResult("没有用户为" + username + "的配置");
+        } else {
+            return RestResultGenerator.genErrorResult("无效的Json");
+        }
+    }
 }
