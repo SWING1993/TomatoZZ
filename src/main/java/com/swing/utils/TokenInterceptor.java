@@ -27,8 +27,10 @@ public class TokenInterceptor implements HandlerInterceptor {
             responseMessage(response, response.getWriter(),10002, "签名错误");
             return false;
         }
+        return true;
 
         // 然后验证token
+        /*
         String token = request.getHeader("token");
         String uid = request.getHeader("uid");
         try {
